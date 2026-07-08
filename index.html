@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop | Gestión Circular de Alimentos para Restaurantes</title>
+    <meta name="description" content="Optimiza la demanda de tu restaurante, automatiza tus compras, canaliza excedentes y reduce el desperdicio con la plataforma inteligente Loop.">
+    <!-- Google Fonts: Inter & Urbanist -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV BAR -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="lucide-leaf"></i>
+                </div>
+                <span class="logo-text">Loop</span>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="#beneficios" class="nav-link">Beneficios</a>
+                <a href="#como-funciona" class="nav-link">Cómo Funciona</a>
+                <a href="#calculadora" class="nav-link">Calculadora de Ahorro</a>
+                <a href="#caracteristicas" class="nav-link">Características</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#registro" class="btn btn-primary btn-nav">Prueba de 2 Semanas Gratis</a>
+            </div>
+            
+            <button class="mobile-menu-toggle" aria-label="Abrir menú">
+                <i class="lucide-menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="beneficios">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-eco">
+                        <i class="lucide-sparkles"></i>
+                        <span>Software de Gestión Circular No. 1</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Optimiza, planea, ahorra y <br>
+                        <span class="text-gradient">evita el desperdicio</span> en tu restaurante.
+                    </h1>
+                    <p class="hero-subtitle">
+                        La plataforma inteligente de gestión circular que predice tu demanda, automatiza tus compras, canaliza excedentes mediante promociones dinámicas y procesa tus residuos orgánicos.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#registro" class="btn btn-primary btn-lg">Comenzar Prueba Gratuita (14 días)</a>
+                        <a href="#registro" class="btn btn-secondary btn-lg" id="btn-demo-trigger">Solicitar Demostración en Vivo</a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="trust-avatars">
+                            <span class="trust-avatar">👨‍🍳</span>
+                            <span class="trust-avatar">👩‍🍳</span>
+                            <span class="trust-avatar">🍳</span>
+                        </div>
+                        <p class="trust-text">Únete a más de 120 restaurantes sostenibles reduciendo mermas hoy.</p>
+                    </div>
+                </div>
+
+                <!-- Dashboard Preview -->
+                <div class="hero-dashboard-wrapper">
+                    <div class="dashboard-mockup">
+                        <div class="mockup-header">
+                            <div class="mockup-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="mockup-search">app.loopcircular.com/dashboard</div>
+                        </div>
+                        <div class="mockup-body">
+                            <!-- Sidebar -->
+                            <div class="mockup-sidebar">
+                                <div class="sidebar-logo">
+                                    <i class="lucide-leaf text-green"></i>
+                                    <span>Loop</span>
+                                </div>
+                                <div class="sidebar-menu">
+                                    <div class="menu-item active"><i class="lucide-layout-dashboard"></i> <span>Dashboard</span></div>
+                                    <div class="menu-item"><i class="lucide-shopping-bag"></i> <span>Compras</span></div>
+                                    <div class="menu-item"><i class="lucide-trending-up"></i> <span>Predicciones</span></div>
+                                    <div class="menu-item"><i class="lucide-qr-code"></i> <span>Menú QR</span></div>
+                                    <div class="menu-item"><i class="lucide-recycle"></i> <span>Residuos</span></div>
+                                </div>
+                            </div>
+                            <!-- Main Panel -->
+                            <div class="mockup-main">
+                                <div class="main-header">
+                                    <div>
+                                        <span class="welcome-text">Panel de Control</span>
+                                        <h3 class="restaurant-name">Restaurante Loop Moderno</h3>
+                                    </div>
+                                    <div class="trial-card">
+                                        <div class="trial-info">
+                                            <span class="trial-title">Prueba gratuita</span>
+                                            <span class="trial-days">Te quedan 14 días</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="dashboard-grid">
+                                    <!-- Ahorro Card -->
+                                    <div class="db-card card-savings">
+                                        <div class="card-header-flex">
+                                            <span>Ahorro estimado hoy</span>
+                                            <span class="badge-success"><i class="lucide-trending-up"></i> +12%</span>
+                                        </div>
+                                        <div class="savings-value">$1.250,00</div>
+                                        <div class="savings-chart">
+                                            <svg viewBox="0 0 100 30" class="chart-svg">
+                                                <path d="M0 25 C20 23, 40 10, 60 15 C80 12, 90 2, 100 1" fill="none" stroke="#2E7D32" stroke-width="2.5" />
+                                                <path d="M0 25 C20 23, 40 10, 60 15 C80 12, 90 2, 100 1 L100 30 L0 30 Z" fill="url(#chart-gradient)" opacity="0.15" />
+                                                <defs>
+                                                    <linearGradient id="chart-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                        <stop offset="0%" stop-color="#2E7D32" />
+                                                        <stop offset="100%" stop-color="#2E7D32" stop-opacity="0" />
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Stats -->
+                                    <div class="db-card card-stats">
+                                        <div class="stat-item">
+                                            <div class="stat-icon"><i class="lucide-utensils"></i></div>
+                                            <div class="stat-info">
+                                                <span class="stat-label">Platillos proyectados</span>
+                                                <span class="stat-number">120 <small>unidades</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-icon"><i class="lucide-dollar-sign"></i></div>
+                                            <div class="stat-info">
+                                                <span class="stat-label">Ahorro estimado</span>
+                                                <span class="stat-number">$1.250 <small>este mes</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-icon"><i class="lucide-scale"></i></div>
+                                            <div class="stat-info">
+                                                <span class="stat-label">Desperdicio evitado</span>
+                                                <span class="stat-number">8,5 kg <small>hoy</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Recent Alert -->
+                                <div class="db-card card-alert">
+                                    <div class="alert-content">
+                                        <i class="lucide-bell text-warning"></i>
+                                        <div class="alert-text">
+                                            <strong>Alerta de Caducidad:</strong> 5kg de Tomate Cherry vencen en 24h. <span class="action-link">Crear promoción QR</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI CALCULATOR SECTION -->
+        <section class="roi-section" id="calculadora">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Calculadora de Retorno</span>
+                    <h2 class="section-title">¿Cuánto dinero estás tirando a la basura?</h2>
+                    <p class="section-subtitle">Calcula el impacto financiero inmediato que el desperdicio de alimentos tiene en tu operación y descubre cuánto puedes recuperar con Loop.</p>
+                </div>
+
+                <div class="calculator-container">
+                    <!-- Inputs -->
+                    <div class="calculator-inputs">
+                        <div class="input-group">
+                            <div class="label-wrapper">
+                                <label for="input-gasto">Gasto mensual en insumos ($)</label>
+                                <span class="input-value" id="val-gasto">$15.000</span>
+                            </div>
+                            <input type="range" id="input-gasto" min="1000" max="50000" step="500" value="15000" class="slider">
+                            <div class="slider-labels">
+                                <span>$1.000</span>
+                                <span>$50.000</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Porcentaje estimado de desperdicio diario</label>
+                            <div class="waste-buttons">
+                                <button type="button" class="btn-waste" data-value="0.05">5% <span class="waste-desc">Mínimo</span></button>
+                                <button type="button" class="btn-waste active" data-value="0.10">10% <span class="waste-desc">Común</span></button>
+                                <button type="button" class="btn-waste" data-value="0.15">15% <span class="waste-desc">Crítico</span></button>
+                                <button type="button" class="btn-waste" data-value="0.20">20% <span class="waste-desc">Extremo</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="calculator-results">
+                        <div class="result-box loss-box">
+                            <span class="result-label">Dinero que estás perdiendo al mes</span>
+                            <div class="result-value text-red" id="calc-perdida">$1.500,00</div>
+                            <p class="result-explanation">Basado en tu merma diaria estimada no controlada.</p>
+                        </div>
+
+                        <div class="result-box savings-box">
+                            <span class="result-label">Ahorro anual proyectado con Loop</span>
+                            <div class="result-value text-green" id="calc-ahorro">$13.500,00</div>
+                            <p class="result-explanation">Estimación garantizada recuperando al menos el 75% de tu desperdicio actual.</p>
+                        </div>
+
+                        <a href="#registro" class="btn btn-accent btn-block text-center">
+                            Quiero recuperar este dinero gratis
+                            <i class="lucide-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features-section" id="caracteristicas">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Nuestra Solución</span>
+                    <h2 class="section-title">Las 5 Columnas de la Gestión Circular</h2>
+                    <p class="section-subtitle">Una plataforma integrada que cubre cada etapa del ciclo de vida del alimento en tu restaurante.</p>
+                </div>
+
+                <div class="features-grid">
+                    <!-- Columna 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="lucide-trending-up"></i>
+                        </div>
+                        <h3 class="feature-card-title">Proyección de Demanda Inteligente</h3>
+                        <p class="feature-card-text">Predice la demanda diaria de platillos mediante IA y ajusta tu producción con datos reales del POS.</p>
+                    </div>
+
+                    <!-- Columna 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="lucide-bell"></i>
+                        </div>
+                        <h3 class="feature-card-title">Control de Almacenamiento y Alertas</h3>
+                        <p class="feature-card-text">Recibe alertas automáticas de caducidad en tiempo real y optimiza tus órdenes de compra antes de que ocurra la pérdida.</p>
+                    </div>
+
+                    <!-- Columna 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="lucide-qr-code"></i>
+                        </div>
+                        <h3 class="feature-card-title">Menús Improvisados y Descuentos</h3>
+                        <p class="feature-card-text">Convierte el sobrestock en ingresos rápidos. Genera promociones dinámicas y actualiza el menú digital por código QR al instante.</p>
+                    </div>
+
+                    <!-- Columna 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="lucide-recycle"></i>
+                        </div>
+                        <h3 class="feature-card-title">Deshidratación de Residuos Orgánicos</h3>
+                        <p class="feature-card-text">Integra y monitorea equipos deshidratadores para transformar mermas inevitables en abono orgánico comercializable.</p>
+                    </div>
+
+                    <!-- Columna 5 -->
+                    <div class="feature-card feature-card-double">
+                        <div class="feature-icon-wrapper">
+                            <i class="lucide-video"></i>
+                        </div>
+                        <div>
+                            <h3 class="feature-card-title">Capacitaciones y Soporte 24/7</h3>
+                            <p class="feature-card-text">Acceso a tutoriales rápidos para tu personal de cocina y soporte técnico permanente para reducir al mínimo la fricción tecnológica.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS (VALIDATION FLOW) -->
+        <section class="how-it-works" id="como-funciona">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Validación en Acción</span>
+                    <h2 class="section-title">¿Cómo se organiza tu validación?</h2>
+                    <p class="section-subtitle">El camino hacia un restaurante con desperdicio cero es simple, transparente y sin riesgos.</p>
+                </div>
+
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Registro rápido</h3>
+                        <p class="step-text">Configura el perfil básico de tu restaurante en menos de 3 minutos sin ingresar tarjetas de crédito.</p>
+                    </div>
+                    <div class="flow-step-arrow">
+                        <i class="lucide-chevron-right"></i>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Demo Personalizada</h3>
+                        <p class="step-text">Te mostramos exactamente cómo Loop se adapta a tu menú específico, inventarios y dinámicas de cocina.</p>
+                    </div>
+                    <div class="flow-step-arrow">
+                        <i class="lucide-chevron-right"></i>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Prueba de 2 semanas</h3>
+                        <p class="step-text">Comienza a medir el impacto real de ahorro económico y reducción de desperdicio en tu cocina activa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPTURE FORM SECTION -->
+        <section class="capture-section" id="registro">
+            <div class="container">
+                <div class="capture-card">
+                    <div class="capture-header text-center">
+                        <div class="badge-accent">Pruébalo Gratis Hoy</div>
+                        <h2 class="capture-title">Empieza a optimizar tu cocina</h2>
+                        <p class="capture-subtitle">Completa los datos de tu restaurante y agenda tu demostración en vivo. Estarás operando con Loop en menos de 24 horas.</p>
+                    </div>
+
+                    <form id="form-validation" class="capture-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="admin-name">Nombre del Administrador / Gerente</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="lucide-user"></i>
+                                    <input type="text" id="admin-name" required placeholder="Ej. Carlos Mendoza">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="restaurant-name">Nombre del Restaurante</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="lucide-utensils"></i>
+                                    <input type="text" id="restaurant-name" required placeholder="Ej. Bistro Verde">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="restaurant-city">Ciudad</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="lucide-map-pin"></i>
+                                    <input type="text" id="restaurant-city" required placeholder="Ej. Guayaquil">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="restaurant-size">Tipo de comida / Tamaño</label>
+                                <div class="input-icon-wrapper">
+                                    <i class="lucide-layers"></i>
+                                    <select id="restaurant-size" required>
+                                        <option value="" disabled selected>Selecciona una opción</option>
+                                        <option value="pequeno">Pequeño (1-5 mesas / Solo delivery)</option>
+                                        <option value="mediano">Mediano (6-20 mesas)</option>
+                                        <option value="grande">Grande (Más de 20 mesas / Franquicia)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block btn-lg submit-btn">
+                            Solicitar mi Demo y Prueba Gratuita de 14 Días
+                            <i class="lucide-arrow-right"></i>
+                        </button>
+
+                        <p class="form-guarantee text-center">
+                            <i class="lucide-shield-check"></i>
+                            Sin tarjetas de crédito. Configuración asistida en menos de 24 horas.
+                        </p>
+                    </form>
+
+                    <!-- Success Message Container -->
+                    <div id="success-message" class="success-container hidden">
+                        <div class="success-icon-wrapper">
+                            <i class="lucide-check-circle"></i>
+                        </div>
+                        <h3 class="success-title">¡Solicitud recibida con éxito!</h3>
+                        <p class="success-text">
+                            Gracias, <span id="summary-admin"></span>. Nos pondremos en contacto contigo en las próximas <strong>3 horas</strong> al correo y teléfono asociados para agendar la Demo de <strong><span id="summary-restaurant"></span></strong> en <span id="summary-city"></span> y activar tu prueba de 2 semanas de inmediato.
+                        </p>
+                        <div class="success-badge">Fase de validación de cortesía activa</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="lucide-leaf"></i>
+                    </div>
+                    <span class="logo-text">Loop</span>
+                </a>
+                <p class="footer-desc">El software líder en economía circular alimentaria para la gastronomía moderna latinoamericana.</p>
+            </div>
+            <div class="footer-links">
+                <div class="links-group">
+                    <h4>Producto</h4>
+                    <a href="#beneficios">Beneficios</a>
+                    <a href="#caracteristicas">Características</a>
+                    <a href="#calculadora">Calculadora de ROI</a>
+                </div>
+                <div class="links-group">
+                    <h4>Legal</h4>
+                    <a href="#">Términos de Servicio</a>
+                    <a href="#">Política de Privacidad</a>
+                    <a href="#">Políticas de Cookies</a>
+                </div>
+                <div class="links-group">
+                    <h4>Contacto</h4>
+                    <a href="mailto:soporte@loopcircular.com">soporte@loopcircular.com</a>
+                    <a href="#">Centro de Ayuda</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container footer-bottom-flex">
+                <p>&copy; 2026 Loop Circular Inc. Todos los derechos reservados.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="lucide-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="lucide-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="lucide-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
