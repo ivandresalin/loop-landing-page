@@ -300,7 +300,7 @@ function navigateTo(screenId) {
     'dashboard': 'Panel de Control',
     'inventario': 'Inventario Inteligente',
     'predicciones': 'Predicción de Demanda',
-    'promotions': 'Promociones Dinámicas',
+    'promociones': 'Promociones Dinámicas',
     'residuos': 'Monitor de Desperdicio',
     'reportes': 'Reportes & Análisis'
   };
@@ -315,7 +315,7 @@ function navigateTo(screenId) {
     case 'dashboard':    renderDashboard();   break;
     case 'inventario':   renderInventory();   break;
     case 'predicciones': renderPredictions(); break;
-    case 'promotions':   renderPromotions();  break;
+    case 'promociones':   renderPromotions();  break;
     case 'residuos':     renderWaste();       break;
     case 'reportes':     renderReports();     break;
   }

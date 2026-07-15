@@ -3681,3 +3681,171 @@ body {
   box-shadow: 0 0 0 3px rgba(222, 255, 154, 0.5);
   outline: none;
 }
+
+/* PREDICCIONES CHART */
+.pred-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+.pred-bar {
+  width: 32px;
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  transition: height 0.5s ease-out;
+}
+.pred-bar-stock {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  bottom: 0;
+  border-radius: 0 0 0 0; /* stock part doesn't need rounding if it's at bottom */
+}
+.pred-bar-value {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+.pred-bar-label {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* PROMO CARDS */
+.promo-card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+.promo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.promo-discount {
+  font-weight: 800;
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+.promo-card-title {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+.promo-prices {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.price-old {
+  text-decoration: line-through;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.price-new {
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.promo-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.promo-qr {
+  display: flex;
+  justify-content: center;
+}
+.qr-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.qr-pattern {
+  display: grid;
+  grid-template-columns: repeat(9, 10px);
+  grid-template-rows: repeat(9, 10px);
+  gap: 2px;
+  background: #fff;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.qr-cell {
+  background: transparent;
+}
+.qr-cell.qr-filled {
+  background: var(--primary);
+}
+.qr-label {
+  font-size: 0.7rem;
+  margin-top: 4px;
+}
+
+/* PHONE PROMO PREVIEW */
+.phone-promo-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 100%;
+}
+.phone-promo-badge {
+  background: var(--danger);
+  color: white;
+  padding: 4px 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-block;
+  border-radius: 0 0 12px 0;
+}
+.phone-promo-card h4 {
+  margin: 12px 16px 4px 16px;
+  text-align: left;
+}
+.phone-promo-qty {
+  margin: 0 16px 12px 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-align: left;
+}
+.phone-promo-prices {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  align-items: center;
+}
+.phone-price-old {
+  text-decoration: line-through;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.phone-price-new {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+.phone-promo-timer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--warning);
+  padding: 12px 16px;
+}
+.phone-btn {
+  margin: 0 16px 16px 16px;
+  width: calc(100% - 32px);
+}
