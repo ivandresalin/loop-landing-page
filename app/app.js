@@ -649,7 +649,6 @@ function renderPromotions() {
     `;
   }).join('');
   // Slider and select interaction
-  const selectEl = document.getElementById('promo-product');
   const sliderEl = document.getElementById('promo-discount-slider');
   const discountLabel = document.getElementById('promo-discount-value');
   const calcPrice = document.getElementById('promo-calc-price');
