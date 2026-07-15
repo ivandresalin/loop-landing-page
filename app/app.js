@@ -426,7 +426,55 @@ function renderSavingsChart() {
     dots += `<circle cx="${p.x}" cy="${p.y}" r="5" fill="var(--primary)" stroke="var(--surface)" stroke-width="2.5"/>`;
   });
 
+  container.innerHTML = `<svg viewBox="0 0 ${width} ${height}" class="chart-svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+    ${gridLines}
+    <path d="${areaPath}" fill="url(#areaGrad)"/>
+    <polyline points="${polylinePoints}" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}
+    ${xLabels}
+  </svg>`;
+
   if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function renderInventory() {
+  const container = document.getElementById('screen-inventario');
+  if (!container) return;
+
+  renderInventoryRows(inventoryData);
+
+  const searchInput = document.getElementById('inventory-search');
+  if (searchInput && !searchInput.hasAttribute('data-bound')) {
+    searchInput.setAttribute('data-bound', 'true');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = inventoryData.filter(i => i.name.toLowerCase().includes(term) || i.category.toLowerCase().includes(term));
+      renderInventoryRows(filtered);
+    });
+  }
+
+  const filterBtns = document.querySelectorAll('#inventory-filters .filter-btn');
+  filterBtns.forEach(btn => {
+    if (!btn.hasAttribute('data-bound')) {
+      btn.setAttribute('data-bound', 'true');
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.getAttribute('data-filter');
+        if (cat === 'all') {
+          renderInventoryRows(inventoryData);
+        } else {
+          renderInventoryRows(inventoryData.filter(i => i.category === cat));
+        }
+      });
+    }
+  });
 }
 
 function renderInventoryRows(data) {
@@ -648,6 +696,9 @@ function renderPromotions() {
       </div>
     `;
   }).join('');
+  
+  listContainer.innerHTML = promoCards;
+
   // Slider and select interaction
   const sliderEl = document.getElementById('promo-discount-slider');
   const discountLabel = document.getElementById('promo-discount-value');
