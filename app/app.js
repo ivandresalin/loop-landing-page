@@ -361,12 +361,12 @@ function renderDashboard() {
   });
 
   // Trial progress bar
-  const trialBar = document.getElementById('trial-progress');
+  const trialBar = document.getElementById('trial-fill-main');
   if (trialBar) {
     const pct = ((restaurant.trialTotal - restaurant.trialDaysLeft) / restaurant.trialTotal) * 100;
     trialBar.style.width = pct + '%';
   }
-  const trialText = document.getElementById('trial-text');
+  const trialText = document.getElementById('trial-remaining');
   if (trialText) {
     trialText.textContent = `${restaurant.trialDaysLeft} días restantes de ${restaurant.trialTotal}`;
   }
