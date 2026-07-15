@@ -426,132 +426,6 @@ function renderSavingsChart() {
     dots += `<circle cx="${p.x}" cy="${p.y}" r="5" fill="var(--primary)" stroke="var(--surface)" stroke-width="2.5"/>`;
   });
 
-  container.innerHTML = `
-    <svg viewBox="0 0 ${width} ${height}" class="chart-svg" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.02"/>
-        </linearGradient>
-      </defs>
-      ${gridLines}
-      <path d="${areaPath}" fill="url(#areaGrad)"/>
-      <polyline points="${polylinePoints}" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      ${dots}
-      ${xLabels}
-    </svg>
-  `;
-}
-
-function renderUrgentAlerts() {
-  const container = document.getElementById('dashboard-alerts');
-  if (!container) return;
-
-  const urgentItems = inventoryData.filter(p => p.status === 'urgente' || p.status === 'proximo');
-
-  const cards = urgentItems.map(item => {
-    const statusClass = item.status === 'urgente' ? 'badge-urgente' : 'badge-proximo';
-    const statusLabel = item.status === 'urgente' ? 'URGENTE' : 'PRÓXIMO';
-    const icon = item.status === 'urgente' ? 'alert-triangle' : 'clock';
-    const expText = item.expirationDays === 1 ? '1 día' : `${item.expirationDays} días`;
-
-    return `
-      <div class="alert-card alert-${item.status}">
-        <div class="alert-card-header">
-          <i data-lucide="${icon}" class="alert-icon"></i>
-          <span class="badge ${statusClass}">${statusLabel}</span>
-        </div>
-        <h4 class="alert-card-title">${item.name}</h4>
-        <p class="alert-card-detail">${item.quantity} ${item.unit} — vence en ${expText}</p>
-        <p class="alert-card-cost">Valor: ${formatCurrency(item.quantity * item.costPerUnit)}</p>
-        <button class="btn btn-sm btn-outline" onclick="openPromoFromAlert(${item.id})">Crear Promoción</button>
-      </div>
-    `;
-  }).join('');
-
-  container.innerHTML = cards;
-}
-
-function openPromoFromAlert(productId) {
-  navigateTo('promotions');
-}
-
-// ────────────────────────────────────────────────────────────
-// 5. INVENTORY
-// ────────────────────────────────────────────────────────────
-
-function renderInventory() {
-  const container = document.getElementById('screen-inventario');
-  if (!container) return;
-
-  // Gather unique categories
-  const categories = [...new Set(inventoryData.map(p => p.category))];
-
-  container.innerHTML = `
-    <div class="inventory-toolbar">
-      <div class="search-box">
-        <i data-lucide="search" class="search-icon"></i>
-        <input type="text" id="inventory-search" placeholder="Buscar producto..." class="search-input"/>
-      </div>
-      <div class="filter-pills">
-        <button class="pill pill-active" data-category="all">Todos</button>
-        ${categories.map(c => `<button class="pill" data-category="${c}">${c}</button>`).join('')}
-      </div>
-    </div>
-
-    <div class="table-responsive">
-      <table class="data-table" id="inventory-table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Categoría</th>
-            <th>Cantidad</th>
-            <th>Vencimiento</th>
-            <th>Estado</th>
-            <th>Valor</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="inventory-tbody">
-        </tbody>
-      </table>
-    </div>
-  `;
-
-  renderInventoryRows(inventoryData);
-
-  // Search listener
-  const searchInput = document.getElementById('inventory-search');
-  if (searchInput) {
-    searchInput.addEventListener('keyup', () => {
-      const query = searchInput.value.toLowerCase();
-      const activeCategory = document.querySelector('.pill.pill-active')?.getAttribute('data-category') || 'all';
-      const filtered = inventoryData.filter(p => {
-        const matchName = p.name.toLowerCase().includes(query);
-        const matchCat = activeCategory === 'all' || p.category === activeCategory;
-        return matchName && matchCat;
-      });
-      renderInventoryRows(filtered);
-    });
-  }
-
-  // Category filter
-  const pills = container.querySelectorAll('.pill');
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      pills.forEach(p => p.classList.remove('pill-active'));
-      pill.classList.add('pill-active');
-      const cat = pill.getAttribute('data-category');
-      const query = document.getElementById('inventory-search')?.value.toLowerCase() || '';
-      const filtered = inventoryData.filter(p => {
-        const matchName = p.name.toLowerCase().includes(query);
-        const matchCat = cat === 'all' || p.category === cat;
-        return matchName && matchCat;
-      });
-      renderInventoryRows(filtered);
-    });
-  });
-
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
@@ -679,8 +553,9 @@ function openPromoModal(productId) {
 // ────────────────────────────────────────────────────────────
 
 function renderPredictions() {
-  const container = document.getElementById('screen-predicciones');
-  if (!container) return;
+  const chartContainer = document.getElementById('predictions-chart');
+  const tbody = document.getElementById('predictions-tbody');
+  if (!chartContainer || !tbody) return;
 
   const maxDemand = Math.max(...demandPredictions.map(d => d.predicted));
 
@@ -689,8 +564,6 @@ function renderPredictions() {
     const heightPct = (d.predicted / maxDemand) * 100;
     const isCovered = d.stockCovers >= d.predicted;
     const barColor = isCovered ? 'var(--success)' : 'var(--danger)';
-    const deficit = d.predicted - d.stockCovers;
-
     return `
       <div class="pred-bar-wrapper">
         <div class="pred-bar-value">${d.predicted}</div>
@@ -701,6 +574,8 @@ function renderPredictions() {
       </div>
     `;
   }).join('');
+  
+  chartContainer.innerHTML = barsHTML;
 
   // Table
   const tableRows = demandPredictions.map(d => {
@@ -723,44 +598,13 @@ function renderPredictions() {
       </tr>
     `;
   }).join('');
+  
+  tbody.innerHTML = tableRows;
 
-  container.innerHTML = `
-    <div class="predictions-chart-section">
-      <h3 class="section-title"><i data-lucide="bar-chart-3"></i> Demanda Proyectada — Mañana</h3>
-      <div class="pred-chart">${barsHTML}</div>
-      <div class="pred-legend">
-        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span> Stock suficiente</span>
-        <span class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span> Stock insuficiente</span>
-      </div>
-    </div>
-
-    <div class="predictions-table-section">
-      <h3 class="section-title"><i data-lucide="table"></i> Detalle por Plato</h3>
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Plato</th>
-              <th class="text-center">Demanda</th>
-              <th class="text-center">Stock Cubre</th>
-              <th class="text-center">Diferencia</th>
-              <th class="text-center">Estado</th>
-            </tr>
-          </thead>
-          <tbody>${tableRows}</tbody>
-        </table>
-      </div>
-      <div class="predictions-actions">
-        <button class="btn btn-primary" id="btn-generate-order">
-          <i data-lucide="shopping-cart"></i> Generar Orden de Compra
-        </button>
-      </div>
-    </div>
-  `;
-
-  // Button action
+  // Button action (Event Delegation to avoid duplicates)
   const orderBtn = document.getElementById('btn-generate-order');
-  if (orderBtn) {
+  if (orderBtn && !orderBtn.hasAttribute('data-bound')) {
+    orderBtn.setAttribute('data-bound', 'true');
     orderBtn.addEventListener('click', () => {
       showToast('Orden de compra generada con éxito para productos faltantes', 'success');
     });
@@ -774,12 +618,12 @@ function renderPredictions() {
 // ────────────────────────────────────────────────────────────
 
 function renderPromotions() {
-  const container = document.getElementById('screen-promociones');
-  if (!container) return;
+  const listContainer = document.getElementById('promo-list');
+  const selectEl = document.getElementById('promo-product');
+  if (!listContainer) return;
 
   // Cards for active promotions
   const promoCards = activePromotions.map(p => {
-    const savingsPerUnit = p.originalPrice - p.newPrice;
     return `
       <div class="promo-card">
         <div class="promo-card-header">
@@ -797,67 +641,13 @@ function renderPromotions() {
         </div>
         <div class="promo-qr">
           <div class="qr-placeholder" title="Código QR de la promoción">
-            <div class="qr-pattern">
-              ${generateQRPattern()}
-            </div>
+            <div class="qr-pattern">${generateQRPattern()}</div>
             <span class="qr-label">QR Promoción #${p.id}</span>
           </div>
         </div>
       </div>
     `;
   }).join('');
-
-  // Form to create new promotion
-  const urgentProducts = inventoryData.filter(p => p.status === 'urgente' || p.status === 'proximo');
-  const optionsHTML = urgentProducts.map(p => `<option value="${p.id}">${p.name} (${p.quantity} ${p.unit}) — vence en ${p.expirationDays} día${p.expirationDays > 1 ? 's' : ''}</option>`).join('');
-
-  container.innerHTML = `
-    <div class="promotions-grid">
-      <div class="promotions-list-section">
-        <h3 class="section-title"><i data-lucide="tag"></i> Promociones Activas (${activePromotions.length})</h3>
-        <div class="promo-cards-grid">${promoCards}</div>
-      </div>
-
-      <div class="promotions-create-section">
-        <h3 class="section-title"><i data-lucide="plus-circle"></i> Nueva Promoción</h3>
-        <div class="promo-form card-glass">
-          <div class="form-group">
-            <label for="promo-product">Producto</label>
-            <select id="promo-product" class="form-select">
-              <option value="">Seleccionar producto...</option>
-              ${optionsHTML}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="promo-discount-slider">Descuento: <span id="promo-discount-value">30</span>%</label>
-            <input type="range" id="promo-discount-slider" min="10" max="70" value="30" class="slider"/>
-          </div>
-          <div class="form-group">
-            <label>Precio calculado</label>
-            <p class="form-static form-highlight" id="promo-calc-price">—</p>
-          </div>
-          <button class="btn btn-primary btn-block" id="btn-create-promo">
-            <i data-lucide="sparkles"></i> Crear Promoción
-          </button>
-        </div>
-
-        <div class="phone-mockup" id="phone-preview">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-header">
-              <span class="phone-logo">Loop</span>
-              <span class="phone-restaurant">${restaurant.name}</span>
-            </div>
-            <div class="phone-promo-preview" id="phone-promo-content">
-              <p class="phone-empty">Selecciona un producto para previsualizar</p>
-            </div>
-          </div>
-          <div class="phone-home-bar"></div>
-        </div>
-      </div>
-    </div>
-  `;
-
   // Slider and select interaction
   const selectEl = document.getElementById('promo-product');
   const sliderEl = document.getElementById('promo-discount-slider');
@@ -1013,78 +803,29 @@ function renderWaste() {
   const avgCost = totalWasteCost / totalItems;
   const totalKg = wasteLog.reduce((s, w) => s + w.quantity, 0);
 
-  container.innerHTML = `
-    <div class="waste-grid">
-      <div class="waste-status-section card-glass">
-        <h3 class="section-title"><i data-lucide="wifi"></i> Estado del Sensor IoT</h3>
-        <div class="machine-status">
-          <div class="status-indicator">
-            <span class="pulse-dot pulse-active"></span>
-            <span class="status-text">Activo</span>
-          </div>
-          <div class="status-details">
-            <p><i data-lucide="thermometer"></i> Cámara fría: <strong>3.2°C</strong></p>
-            <p><i data-lucide="droplets"></i> Humedad: <strong>78%</strong></p>
-            <p><i data-lucide="clock"></i> Última lectura: <strong>hace 2 min</strong></p>
-          </div>
-        </div>
-      </div>
+  const donutEl = document.getElementById('waste-donut');
+  if (donutEl) donutEl.style.background = conicGradient;
+  
+  const donutTotalEl = document.getElementById('waste-donut-total');
+  if (donutTotalEl) donutTotalEl.textContent = formatCurrency(totalWasteCost);
+  
+  const legendContainer = document.getElementById('waste-legend');
+  if (legendContainer) legendContainer.innerHTML = legendHTML;
 
-      <div class="waste-chart-section card-glass">
-        <h3 class="section-title"><i data-lucide="pie-chart"></i> Desperdicio por Causa</h3>
-        <div class="donut-chart-container">
-          <div class="donut-chart" style="background: ${conicGradient};">
-            <div class="donut-center">
-              <span class="donut-total">${formatCurrency(totalWasteCost)}</span>
-              <span class="donut-label">Total</span>
-            </div>
-          </div>
-          <div class="donut-legend">${legendHTML}</div>
-        </div>
-      </div>
+  const totalKgEl = document.getElementById('impact-total-kg');
+  if (totalKgEl) totalKgEl.textContent = formatNumber(totalKg);
 
-      <div class="waste-impact-section card-glass">
-        <h3 class="section-title"><i data-lucide="leaf"></i> Métricas de Impacto</h3>
-        <div class="impact-metrics">
-          <div class="impact-item">
-            <span class="impact-value" id="impact-total-kg">${formatNumber(totalKg)}</span>
-            <span class="impact-label">kg desperdiciados</span>
-          </div>
-          <div class="impact-item">
-            <span class="impact-value" id="impact-avg-cost">${formatCurrency(avgCost)}</span>
-            <span class="impact-label">costo promedio</span>
-          </div>
-          <div class="impact-item">
-            <span class="impact-value" id="impact-total-cost">${formatCurrency(totalWasteCost)}</span>
-            <span class="impact-label">pérdida total (10 días)</span>
-          </div>
-          <div class="impact-item">
-            <span class="impact-value">${totalItems}</span>
-            <span class="impact-label">incidentes registrados</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  const avgCostEl = document.getElementById('impact-avg-cost');
+  if (avgCostEl) avgCostEl.textContent = formatCurrency(avgCost);
 
-    <div class="waste-log-section">
-      <h3 class="section-title"><i data-lucide="list"></i> Registro de Desperdicio</h3>
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Causa</th>
-              <th>Costo</th>
-              <th>Detectado por</th>
-            </tr>
-          </thead>
-          <tbody>${logRows}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
+  const totalCostEl = document.getElementById('impact-total-cost');
+  if (totalCostEl) totalCostEl.textContent = formatCurrency(totalWasteCost);
+
+  const totalIncidentsEl = document.getElementById('impact-total-incidents');
+  if (totalIncidentsEl) totalIncidentsEl.textContent = totalItems;
+
+  const tbody = document.getElementById('waste-tbody');
+  if (tbody) tbody.innerHTML = logRows;
 
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
@@ -1152,37 +893,9 @@ function renderReports() {
     </tr>
   `).join('');
 
-  container.innerHTML = `
-    <div class="reports-kpi-grid">
-      <div class="report-kpi card-glass">
-        <div class="report-kpi-icon"><i data-lucide="trending-up"></i></div>
-        <div class="report-kpi-value">${formatCurrency(totalSavings)}</div>
-        <div class="report-kpi-label">Ahorro Total (6 meses)</div>
-      </div>
-      <div class="report-kpi card-glass">
-        <div class="report-kpi-icon"><i data-lucide="trash-2"></i></div>
-        <div class="report-kpi-value">${formatCurrency(totalWaste)}</div>
-        <div class="report-kpi-label">Desperdicio Total</div>
-      </div>
-      <div class="report-kpi card-glass">
-        <div class="report-kpi-icon"><i data-lucide="leaf"></i></div>
-        <div class="report-kpi-value">${totalCO2} kg</div>
-        <div class="report-kpi-label">CO₂ Evitado</div>
-      </div>
-      <div class="report-kpi card-glass">
-        <div class="report-kpi-icon"><i data-lucide="utensils"></i></div>
-        <div class="report-kpi-value">${formatNumber(totalDishes)}</div>
-        <div class="report-kpi-label">Platos Servidos</div>
-      </div>
-      <div class="report-kpi card-glass">
-        <div class="report-kpi-icon"><i data-lucide="percent"></i></div>
-        <div class="report-kpi-value">${avgWastePct}%</div>
-        <div class="report-kpi-label">Desperdicio Promedio</div>
-      </div>
-    </div>
-
-    <div class="reports-chart-section card-glass">
-      <h3 class="section-title"><i data-lucide="line-chart"></i> Tendencia de Ahorro Mensual</h3>
+  const chartContainer = document.getElementById('reports-chart');
+  if (chartContainer) {
+    chartContainer.innerHTML = `
       <svg viewBox="0 0 ${chartWidth} ${chartHeight}" class="chart-svg" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="reportAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1196,32 +909,23 @@ function renderReports() {
         ${dotsSVG}
         ${xlSVG}
       </svg>
-    </div>
+    `;
+  }
+  
+  const tbody = document.getElementById('reports-tbody');
+  if (tbody) tbody.innerHTML = breakdownRows;
 
-    <div class="reports-breakdown-section">
-      <div class="breakdown-header">
-        <h3 class="section-title"><i data-lucide="table"></i> Desglose Mensual</h3>
-        <button class="btn btn-outline" id="btn-download-report">
-          <i data-lucide="download"></i> Descargar Reporte
-        </button>
-      </div>
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Mes</th>
-              <th>Ahorro</th>
-              <th>Desperdicio</th>
-              <th>CO₂ Evitado</th>
-              <th>Platos</th>
-              <th>% Desperdicio</th>
-            </tr>
-          </thead>
-          <tbody>${breakdownRows}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
+  const totalSavingsEl = document.getElementById('report-total-savings');
+  if (totalSavingsEl) totalSavingsEl.textContent = formatCurrency(totalSavings);
+
+  const totalWasteEl = document.getElementById('report-total-waste');
+  if (totalWasteEl) totalWasteEl.textContent = `${formatNumber(totalWaste)} kg`;
+
+  const totalCO2El = document.getElementById('report-total-co2');
+  if (totalCO2El) totalCO2El.textContent = `${formatNumber(totalCO2)} kg`;
+
+  const totalDishesEl = document.getElementById('report-total-dishes');
+  if (totalDishesEl) totalDishesEl.textContent = formatNumber(totalDishes);
 
   // Download report button
   const downloadBtn = document.getElementById('btn-download-report');
