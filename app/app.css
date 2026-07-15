@@ -46,16 +46,16 @@ body {
   /* Backgrounds */
   --bg-light: #F4F9F4;
   --bg-white: #FFFFFF;
-  --bg-sidebar: #0d120e;
-  --bg-sidebar-hover: #1a241c;
-  --bg-sidebar-active: rgba(222, 255, 154, 0.10);
+  --bg-sidebar: var(--primary);
+  --bg-sidebar-hover: var(--primary-light);
+  --bg-sidebar-active: var(--accent);
 
   /* Text */
   --text-dark: #111827;
   --text-muted: #4B5563;
   --text-light: #9CA3AF;
-  --text-sidebar: #a1b0a5;
-  --text-sidebar-active: #deff9a;
+  --text-sidebar: #D8F3DC;
+  --text-sidebar-active: var(--primary-dark);
 
   /* Status */
   --danger: #DC2626;

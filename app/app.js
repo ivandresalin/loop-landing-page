@@ -286,8 +286,7 @@ function navigateTo(screenId) {
   // Update screens
   const screens = document.querySelectorAll('.screen');
   screens.forEach(s => s.classList.remove('active'));
-  const target = document.getElementById(screenId);
-  if (target) target.classList.add('active');
+  // Class addition is now handled below with 'screen-' prefix
 
   // Update nav
   const navItems = document.querySelectorAll('.nav-item');
@@ -299,22 +298,26 @@ function navigateTo(screenId) {
   const topbarTitle = document.querySelector('.topbar-title');
   const titleMap = {
     'dashboard': 'Panel de Control',
-    'inventory': 'Inventario Inteligente',
-    'predictions': 'Predicción de Demanda',
+    'inventario': 'Inventario Inteligente',
+    'predicciones': 'Predicción de Demanda',
     'promotions': 'Promociones Dinámicas',
-    'waste': 'Monitor de Desperdicio',
-    'reports': 'Reportes & Análisis'
+    'residuos': 'Monitor de Desperdicio',
+    'reportes': 'Reportes & Análisis'
   };
   if (topbarTitle) topbarTitle.textContent = titleMap[screenId] || screenId;
 
+  // Fix: add 'screen-' prefix to target the actual section IDs
+  const target = document.getElementById('screen-' + screenId);
+  if (target) target.classList.add('active');
+
   // Render screen content
   switch (screenId) {
-    case 'dashboard':   renderDashboard();   break;
-    case 'inventory':   renderInventory();   break;
-    case 'predictions': renderPredictions(); break;
-    case 'promotions':  renderPromotions();  break;
-    case 'waste':       renderWaste();       break;
-    case 'reports':     renderReports();     break;
+    case 'dashboard':    renderDashboard();   break;
+    case 'inventario':   renderInventory();   break;
+    case 'predicciones': renderPredictions(); break;
+    case 'promotions':   renderPromotions();  break;
+    case 'residuos':     renderWaste();       break;
+    case 'reportes':     renderReports();     break;
   }
 
   // Close mobile sidebar
@@ -378,7 +381,7 @@ function renderDashboard() {
 }
 
 function renderSavingsChart() {
-  const container = document.getElementById('savings-chart');
+  const container = document.getElementById('dashboard-chart-area');
   if (!container) return;
 
   const width = 520;
@@ -441,7 +444,7 @@ function renderSavingsChart() {
 }
 
 function renderUrgentAlerts() {
-  const container = document.getElementById('urgent-alerts');
+  const container = document.getElementById('dashboard-alerts');
   if (!container) return;
 
   const urgentItems = inventoryData.filter(p => p.status === 'urgente' || p.status === 'proximo');
@@ -478,7 +481,7 @@ function openPromoFromAlert(productId) {
 // ────────────────────────────────────────────────────────────
 
 function renderInventory() {
-  const container = document.getElementById('inventory-content');
+  const container = document.getElementById('screen-inventario');
   if (!container) return;
 
   // Gather unique categories
@@ -676,7 +679,7 @@ function openPromoModal(productId) {
 // ────────────────────────────────────────────────────────────
 
 function renderPredictions() {
-  const container = document.getElementById('predictions-content');
+  const container = document.getElementById('screen-predicciones');
   if (!container) return;
 
   const maxDemand = Math.max(...demandPredictions.map(d => d.predicted));
@@ -771,7 +774,7 @@ function renderPredictions() {
 // ────────────────────────────────────────────────────────────
 
 function renderPromotions() {
-  const container = document.getElementById('promotions-content');
+  const container = document.getElementById('screen-promociones');
   if (!container) return;
 
   // Cards for active promotions
@@ -958,7 +961,7 @@ function generateQRPattern() {
 // ────────────────────────────────────────────────────────────
 
 function renderWaste() {
-  const container = document.getElementById('waste-content');
+  const container = document.getElementById('screen-residuos');
   if (!container) return;
 
   // Waste by reason
@@ -1091,7 +1094,7 @@ function renderWaste() {
 // ────────────────────────────────────────────────────────────
 
 function renderReports() {
-  const container = document.getElementById('reports-content');
+  const container = document.getElementById('screen-reportes');
   if (!container) return;
 
   const latestMonth = monthlyReports[monthlyReports.length - 1];
