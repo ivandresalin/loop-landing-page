@@ -8,7 +8,7 @@
 // ────────────────────────────────────────────────────────────
 
 const restaurant = {
-  name: 'Rukito',
+  name: 'Marea Baja',
   city: 'Guayaquil',
   plan: 'Prueba Gratuita',
   trialDaysLeft: 12,
