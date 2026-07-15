@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop | Dashboard - Rukito</title>
+    <meta name="description" content="Panel de control Loop para gestión circular de alimentos del restaurante Rukito.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen active" id="login-screen">
+        <div class="login-bg-pattern"></div>
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="login-logo-icon">
+                    <i class="lucide-leaf"></i>
+                </div>
+                <span class="login-logo-text">Loop</span>
+            </div>
+            <h2 class="login-title">Bienvenido de vuelta</h2>
+            <p class="login-subtitle">Ingresa a tu panel de gestión circular</p>
+            
+            <form id="login-form" class="login-form">
+                <div class="login-field">
+                    <label for="login-email">Correo electrónico</label>
+                    <div class="login-input-wrapper">
+                        <i class="lucide-mail"></i>
+                        <input type="email" id="login-email" placeholder="gerente@rukito.com" value="gerente@rukito.com">
+                    </div>
+                </div>
+                <div class="login-field">
+                    <label for="login-password">Contraseña</label>
+                    <div class="login-input-wrapper">
+                        <i class="lucide-lock"></i>
+                        <input type="password" id="login-password" placeholder="••••••••" value="demo1234">
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">
+                    Iniciar sesión
+                    <i class="lucide-arrow-right"></i>
+                </button>
+            </form>
+
+            <p class="login-footer-text">
+                <i class="lucide-shield-check"></i>
+                Prototipo de demostración — Datos simulados de Rukito
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== APP SHELL ===== -->
+    <div class="app-shell" id="app-shell">
+        
+        <!-- Mobile overlay -->
+        <div class="overlay-mobile" id="overlay-mobile"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a href="../index.html" class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <i class="lucide-leaf"></i>
+                    </div>
+                    <span class="sidebar-logo-text">Loop</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-screen="dashboard">
+                    <i class="lucide-layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="inventario">
+                    <i class="lucide-package"></i>
+                    <span>Inventario</span>
+                    <span class="nav-badge" id="nav-badge-inventory">4</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="predicciones">
+                    <i class="lucide-trending-up"></i>
+                    <span>Predicciones IA</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="promociones">
+                    <i class="lucide-qr-code"></i>
+                    <span>Promociones QR</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="residuos">
+                    <i class="lucide-recycle"></i>
+                    <span>Residuos</span>
+                </a>
+                <a href="#" class="nav-item" data-screen="reportes">
+                    <i class="lucide-bar-chart-3"></i>
+                    <span>Reportes</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-trial">
+                    <div class="trial-label">
+                        <span>Prueba gratuita</span>
+                        <span class="trial-days-left">12 días</span>
+                    </div>
+                    <div class="trial-bar">
+                        <div class="trial-bar-fill" id="sidebar-trial-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">R</div>
+                    <div class="sidebar-user-info">
+                        <span class="sidebar-user-name">Rukito</span>
+                        <span class="sidebar-user-role">Guayaquil, EC</span>
+                    </div>
+                    <button class="sidebar-logout" title="Cerrar sesión" id="btn-logout">
+                        <i class="lucide-log-out"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <div class="main-area">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="topbar-hamburger" id="hamburger-btn">
+                        <i class="lucide-menu"></i>
+                    </button>
+                    <div>
+                        <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+                        <p class="topbar-subtitle" id="topbar-subtitle">Resumen general de Rukito</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-icon-btn" id="btn-notifications" title="Notificaciones">
+                        <i class="lucide-bell"></i>
+                        <span class="topbar-notification-dot"></span>
+                    </button>
+                    <div class="topbar-user-mini">
+                        <div class="topbar-avatar">R</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="main-content">
+
+                <!-- ===== SCREEN: DASHBOARD ===== -->
+                <section class="screen active" id="screen-dashboard">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon kpi-icon-savings"><i class="lucide-dollar-sign"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Ahorro de hoy</span>
+                                <span class="kpi-value" id="kpi-savings">$0</span>
+                            </div>
+                            <span class="kpi-trend kpi-trend-up"><i class="lucide-trending-up"></i> +8%</span>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon kpi-icon-waste"><i class="lucide-scale"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Desperdicio evitado</span>
+                                <span class="kpi-value" id="kpi-waste">0 kg</span>
+                            </div>
+                            <span class="kpi-trend kpi-trend-up"><i class="lucide-trending-up"></i> +15%</span>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon kpi-icon-dishes"><i class="lucide-utensils"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Platillos proyectados</span>
+                                <span class="kpi-value" id="kpi-dishes">0</span>
+                            </div>
+                            <span class="kpi-trend kpi-trend-neutral"><i class="lucide-minus"></i> estable</span>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon kpi-icon-alerts"><i class="lucide-bell-ring"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Alertas activas</span>
+                                <span class="kpi-value" id="kpi-alerts">0</span>
+                            </div>
+                            <span class="kpi-trend kpi-trend-down"><i class="lucide-trending-down"></i> -2</span>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="dashboard-grid-2col">
+                        <!-- Savings Chart -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h3>Ahorro semanal</h3>
+                                <span class="card-header-tag">Últimos 7 días</span>
+                            </div>
+                            <div class="chart-area" id="dashboard-chart-area">
+                                <!-- SVG chart rendered by JS -->
+                            </div>
+                        </div>
+                        <!-- Trial + Impact -->
+                        <div class="card-stack">
+                            <div class="card trial-card-main">
+                                <div class="card-header">
+                                    <h3>Prueba gratuita</h3>
+                                    <span class="trial-remaining" id="trial-remaining">12 de 14 días</span>
+                                </div>
+                                <div class="trial-progress-main">
+                                    <div class="trial-progress-bar-main">
+                                        <div class="trial-progress-fill-main" id="trial-fill-main" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                                <p class="trial-hint">Aprovecha tu prueba para medir el impacto real de Loop en Rukito.</p>
+                            </div>
+                            <div class="card impact-card">
+                                <div class="card-header">
+                                    <h3>Impacto ambiental</h3>
+                                    <i class="lucide-leaf" style="color: var(--primary-light);"></i>
+                                </div>
+                                <div class="impact-metrics">
+                                    <div class="impact-metric">
+                                        <span class="impact-value" id="impact-co2">28,5 kg</span>
+                                        <span class="impact-label">CO₂e evitado</span>
+                                    </div>
+                                    <div class="impact-metric">
+                                        <span class="impact-value" id="impact-saved">45,2 kg</span>
+                                        <span class="impact-label">Alimentos salvados</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts Row -->
+                    <div class="card alerts-section">
+                        <div class="card-header">
+                            <h3><i class="lucide-alert-triangle" style="color: var(--warning);"></i> Alertas de vencimiento</h3>
+                            <a href="#" class="card-header-link" data-goto="inventario">Ver todo <i class="lucide-arrow-right"></i></a>
+                        </div>
+                        <div class="alert-cards-grid" id="dashboard-alerts">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== SCREEN: INVENTARIO ===== -->
+                <section class="screen" id="screen-inventario">
+                    <div class="filters-bar">
+                        <div class="search-wrapper">
+                            <i class="lucide-search"></i>
+                            <input type="text" id="inventory-search" placeholder="Buscar producto...">
+                        </div>
+                        <div class="filter-buttons" id="inventory-filters">
+                            <button class="filter-btn active" data-filter="all">Todos</button>
+                            <button class="filter-btn" data-filter="Mariscos">Mariscos</button>
+                            <button class="filter-btn" data-filter="Vegetales">Vegetales</button>
+                            <button class="filter-btn" data-filter="Frutas">Frutas</button>
+                            <button class="filter-btn" data-filter="Proteínas">Proteínas</button>
+                            <button class="filter-btn" data-filter="Abarrotes">Abarrotes</button>
+                            <button class="filter-btn" data-filter="Lácteos">Lácteos</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="table-wrapper">
+                            <table class="data-table" id="inventory-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Categoría</th>
+                                        <th>Cantidad</th>
+                                        <th>Vencimiento</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-tbody">
+                                    <!-- Rendered by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== SCREEN: PREDICCIONES ===== -->
+                <section class="screen" id="screen-predicciones">
+                    <div class="predictions-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Proyección de demanda (próximos 7 días)</h3>
+                            </div>
+                            <div class="bar-chart" id="predictions-chart">
+                                <!-- Rendered by JS -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Demanda vs. Stock disponible</h3>
+                                <button class="btn-primary btn-sm" id="btn-generate-order">
+                                    <i class="lucide-shopping-cart"></i> Generar orden de compra
+                                </button>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="data-table" id="predictions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Platillo</th>
+                                            <th>Demanda predicha</th>
+                                            <th>Stock cubre</th>
+                                            <th>Diferencia</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="predictions-tbody">
+                                        <!-- Rendered by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== SCREEN: PROMOCIONES ===== -->
+                <section class="screen" id="screen-promociones">
+                    <div class="promo-layout">
+                        <!-- Active Promotions -->
+                        <div class="promo-list-section">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Promociones activas</h3>
+                                    <button class="btn-primary btn-sm" id="btn-new-promo">
+                                        <i class="lucide-plus"></i> Nueva promoción
+                                    </button>
+                                </div>
+                                <div class="promo-cards" id="promo-cards-container">
+                                    <!-- Rendered by JS -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- QR / Phone Preview -->
+                        <div class="promo-preview-section">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Vista previa Menú QR</h3>
+                                </div>
+                                <div class="phone-mockup" id="phone-mockup">
+                                    <div class="phone-notch"></div>
+                                    <div class="phone-screen">
+                                        <div class="phone-header-bar">
+                                            <i class="lucide-leaf" style="color: var(--accent);"></i>
+                                            <span>Rukito — Menú del día</span>
+                                        </div>
+                                        <div class="phone-promo-content" id="phone-promo-content">
+                                            <div class="phone-empty-state">
+                                                <i class="lucide-scan-line"></i>
+                                                <p>Selecciona una promoción para previsualizar cómo la verá tu cliente.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="phone-home-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== SCREEN: RESIDUOS ===== -->
+                <section class="screen" id="screen-residuos">
+                    <div class="waste-top-grid">
+                        <!-- Machine Status -->
+                        <div class="card machine-card">
+                            <div class="card-header">
+                                <h3>Deshidratador</h3>
+                                <div class="machine-status-badge" id="machine-status">
+                                    <span class="pulse-dot"></span>
+                                    <span>Activo</span>
+                                </div>
+                            </div>
+                            <div class="machine-details">
+                                <div class="machine-stat">
+                                    <i class="lucide-thermometer"></i>
+                                    <div>
+                                        <span class="machine-stat-value">72°C</span>
+                                        <span class="machine-stat-label">Temperatura</span>
+                                    </div>
+                                </div>
+                                <div class="machine-stat">
+                                    <i class="lucide-timer"></i>
+                                    <div>
+                                        <span class="machine-stat-value">4h 20m</span>
+                                        <span class="machine-stat-label">Ciclo actual</span>
+                                    </div>
+                                </div>
+                                <div class="machine-stat">
+                                    <i class="lucide-weight"></i>
+                                    <div>
+                                        <span class="machine-stat-value">3,2 kg</span>
+                                        <span class="machine-stat-label">Carga actual</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Donut Chart -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Destino de la merma</h3>
+                                <span class="card-header-tag">Este mes</span>
+                            </div>
+                            <div class="donut-container">
+                                <div class="donut-chart" id="donut-chart"></div>
+                                <div class="donut-legend" id="donut-legend">
+                                    <div class="legend-item"><span class="legend-dot" style="background:#2E7D32;"></span> Vendido con descuento (40%)</div>
+                                    <div class="legend-item"><span class="legend-dot" style="background:#66BB6A;"></span> Donado (25%)</div>
+                                    <div class="legend-item"><span class="legend-dot" style="background:#deff9a;"></span> Deshidratado (20%)</div>
+                                    <div class="legend-item"><span class="legend-dot" style="background:#9CA3AF;"></span> Descartado (15%)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Impact Cards -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Impacto circular</h3>
+                            </div>
+                            <div class="waste-impact-grid">
+                                <div class="waste-impact-item">
+                                    <i class="lucide-cloud-off"></i>
+                                    <span class="waste-impact-value" id="waste-co2">28,5 kg</span>
+                                    <span class="waste-impact-label">CO₂e evitado</span>
+                                </div>
+                                <div class="waste-impact-item">
+                                    <i class="lucide-sprout"></i>
+                                    <span class="waste-impact-value" id="waste-compost">15,8 kg</span>
+                                    <span class="waste-impact-label">Abono producido</span>
+                                </div>
+                                <div class="waste-impact-item">
+                                    <i class="lucide-hand-heart"></i>
+                                    <span class="waste-impact-value" id="waste-donated">22,3 kg</span>
+                                    <span class="waste-impact-label">Donados</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Waste Log -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Registro de residuos procesados</h3>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table" id="waste-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo de residuo</th>
+                                        <th>Kg procesados</th>
+                                        <th>Destino</th>
+                                        <th>CO₂e evitado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="waste-tbody">
+                                    <!-- Rendered by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== SCREEN: REPORTES ===== -->
+                <section class="screen" id="screen-reportes">
+                    <!-- Report KPIs -->
+                    <div class="report-kpi-grid">
+                        <div class="report-kpi">
+                            <div class="report-kpi-icon"><i class="lucide-dollar-sign"></i></div>
+                            <span class="report-kpi-value" id="report-savings">$0</span>
+                            <span class="report-kpi-label">Dinero ahorrado (mensual)</span>
+                        </div>
+                        <div class="report-kpi">
+                            <div class="report-kpi-icon"><i class="lucide-scale"></i></div>
+                            <span class="report-kpi-value" id="report-kg">0 kg</span>
+                            <span class="report-kpi-label">Desperdicio evitado</span>
+                        </div>
+                        <div class="report-kpi">
+                            <div class="report-kpi-icon"><i class="lucide-cloud-off"></i></div>
+                            <span class="report-kpi-value" id="report-co2">0 kg</span>
+                            <span class="report-kpi-label">CO₂e reducido</span>
+                        </div>
+                        <div class="report-kpi">
+                            <div class="report-kpi-icon"><i class="lucide-hand-heart"></i></div>
+                            <span class="report-kpi-value" id="report-donations">0 kg</span>
+                            <span class="report-kpi-label">Donaciones realizadas</span>
+                        </div>
+                    </div>
+                    <!-- Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Evolución mensual del ahorro</h3>
+                            <button class="btn-secondary btn-sm" id="btn-download-report">
+                                <i class="lucide-download"></i> Descargar reporte
+                            </button>
+                        </div>
+                        <div class="chart-area" id="report-chart-area">
+                            <!-- SVG rendered by JS -->
+                        </div>
+                    </div>
+                    <!-- Breakdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Desglose por categoría</h3>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table" id="report-breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Categoría</th>
+                                        <th>Kg evitados</th>
+                                        <th>Ahorro generado</th>
+                                        <th>Acción principal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-breakdown-tbody">
+                                    <!-- Rendered by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
